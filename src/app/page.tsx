@@ -1,16 +1,15 @@
-"use client";
+import { requireAuth } from "@/lib/auth-utils";
 
-import { useTRPC } from "@/trpc/client";
-import { useQuery } from "@tanstack/react-query";
+import { caller } from "@/trpc/server";
 
-export default function Page() {
-  // const users = await caller.getUsers();
-  const trpc = useTRPC();
-  const { data: users } = useQuery(trpc.getUsers.queryOptions());
+export default async function Page() {
+  await requireAuth();
+
+  const data = await caller.getUsers();
 
   return (
     <div className="flex min-h-screen items-center justify-center">
-      <h1>{JSON.stringify(users)}</h1>
+      <pre>{JSON.stringify(data, null, 2)}</pre>
     </div>
   );
 }
