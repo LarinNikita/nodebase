@@ -1,8 +1,15 @@
+import React from "react";
+
 import Link from "next/link";
-import { PlusIcon } from "lucide-react";
+import { PlusIcon, SearchIcon, XIcon } from "lucide-react";
 
 import { Button } from "./ui/button";
-import React from "react";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+  InputGroupInput,
+} from "./ui/input-group";
 
 type EntityHeaderProps = {
   title: string;
@@ -77,5 +84,41 @@ export const EntityContainer = ({
         {pagination}
       </div>
     </div>
+  );
+};
+
+interface EntitySearchProps {
+  value: string;
+  onChange: (value: string) => void;
+  placeholder?: string;
+}
+
+export const EntitySearch = ({
+  value,
+  onChange,
+  placeholder,
+}: EntitySearchProps) => {
+  return (
+    <InputGroup className="bg-background border-border relative ml-auto max-w-[200px] shadow-none">
+      <InputGroupInput
+        placeholder={placeholder}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+      />
+      <InputGroupAddon>
+        <SearchIcon />
+      </InputGroupAddon>
+      {value && (
+        <InputGroupAddon align="inline-end">
+          <InputGroupButton
+            size="icon-xs"
+            variant="icon"
+            onClick={() => onChange("")}
+          >
+            <XIcon />
+          </InputGroupButton>
+        </InputGroupAddon>
+      )}
+    </InputGroup>
   );
 };

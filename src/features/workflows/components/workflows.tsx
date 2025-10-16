@@ -3,17 +3,39 @@
 import { useRouter } from "next/navigation";
 
 import { useUpgradeModal } from "@/hooks/use-upgrade-modal";
+import { useEntitySearch } from "@/hooks/use-entity-search";
+import { useWorkflowsParams } from "../hooks/use-workflows-params";
 import {
   useCreateWorkflow,
   useSuspenseWorkflows,
 } from "../hooks/use-workflows";
 
-import { EntityContainer, EntityHeader } from "@/components/entity-components";
+import {
+  EntityContainer,
+  EntityHeader,
+  EntitySearch,
+} from "@/components/entity-components";
 
 export const WorkflowsList = () => {
   const workflows = useSuspenseWorkflows();
 
   return <div className="">{JSON.stringify(workflows.data, null, 2)}</div>;
+};
+
+export const WorkflowsSearch = () => {
+  const [params, setParams] = useWorkflowsParams();
+  const { searchValue, onSearchChange } = useEntitySearch({
+    params,
+    setParams,
+  });
+
+  return (
+    <EntitySearch
+      value={searchValue}
+      onChange={onSearchChange}
+      placeholder="Search workflows"
+    />
+  );
 };
 
 export const WorkflowsHeader = ({ disable }: { disable?: boolean }) => {
@@ -55,7 +77,7 @@ export const WorkflowsContainer = ({
   return (
     <EntityContainer
       header={<WorkflowsHeader />}
-      search={<p>search</p>}
+      search={<WorkflowsSearch />}
       pagination={<p>pagination</p>}
     >
       {children}
