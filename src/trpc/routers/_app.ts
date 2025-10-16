@@ -4,6 +4,13 @@ import { createTRPCRouter, protectedProcedure } from "../init";
 import { inngest } from "@/inngest/client";
 
 export const appRouter = createTRPCRouter({
+  testAI: protectedProcedure.mutation(async ({ ctx }) => {
+    await inngest.send({
+      name: "execute/ai",
+    });
+
+    return { success: true, message: "Job queued" };
+  }),
   getUsers: protectedProcedure.query(async ({ ctx }) => {
     await inngest.send({
       name: "test/hello.world",
