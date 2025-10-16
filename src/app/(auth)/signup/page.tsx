@@ -1,4 +1,4 @@
-import { RegisterForm } from "@/app/features/auth/components/RegisterForm";
+import { RegisterForm } from "@/features/auth/components/RegisterForm";
 
 import { requireUnauth } from "@/lib/auth-utils";
 
