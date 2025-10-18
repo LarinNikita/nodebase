@@ -1,4 +1,18 @@
+import { Suspense } from "react";
+
+import { ErrorBoundary } from "react-error-boundary";
+
+import { prefetchWorkflow } from "@/features/workflows/server/prefetch";
+import { EditorHeader } from "@/features/editor/components/editor-header";
+import {
+  Editor,
+  EditorError,
+  EditorLoading,
+} from "@/features/editor/components/editor";
+
 import { requireAuth } from "@/lib/auth-utils";
+
+import { HydrateClient } from "@/trpc/server";
 
 interface PageProps {
   params: Promise<{
@@ -8,12 +22,20 @@ interface PageProps {
 
 export default async function Page({ params }: PageProps) {
   await requireAuth();
+
   const { workflowId } = await params;
+  prefetchWorkflow(workflowId);
 
   return (
-    <>
-      <h1>Page {workflowId}</h1>
-      <p>Page content</p>
-    </>
+    <HydrateClient>
+      <ErrorBoundary fallback={<EditorError />}>
+        <Suspense fallback={<EditorLoading />}>
+          <EditorHeader workflowId={workflowId} />
+          <main className="flex-1">
+            <Editor workflowId={workflowId} />
+          </main>
+        </Suspense>
+      </ErrorBoundary>
+    </HydrateClient>
   );
 }
