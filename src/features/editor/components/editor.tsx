@@ -2,6 +2,7 @@
 
 import { useCallback, useState } from "react";
 
+import { useSetAtom } from "jotai";
 import "@xyflow/react/dist/style.css";
 import {
   ReactFlow,
@@ -25,6 +26,8 @@ import { useSuspenseWorkflow } from "@/features/workflows/hooks/use-workflows";
 
 import { AddNodeButton } from "./add-node-button";
 
+import { editorAtom } from "../store/atoms";
+
 import { ErrorView, LoadingView } from "@/components/entity-components";
 
 export const EditorLoading = () => {
@@ -37,6 +40,8 @@ export const EditorError = () => {
 
 export const Editor = ({ workflowId }: { workflowId: string }) => {
   const { data: workflow } = useSuspenseWorkflow(workflowId);
+
+  const setEditor = useSetAtom(editorAtom);
 
   const [nodes, setNodes] = useState<Node[]>(workflow.nodes);
   const [edges, setEdges] = useState<Edge[]>(workflow.edges);
@@ -67,6 +72,7 @@ export const Editor = ({ workflowId }: { workflowId: string }) => {
         onConnect={onConnect}
         nodeTypes={nodeComponents}
         fitView
+        onInit={setEditor}
         proOptions={{
           hideAttribution: true,
         }}
