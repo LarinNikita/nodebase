@@ -8,7 +8,7 @@ export const BaseNode = forwardRef<
   <div
     ref={ref}
     className={cn(
-      "relative rounded-md border bg-card text-card-foreground",
+      "bg-card text-card-foreground relative rounded-md border",
       "hover:ring-1",
       // React Flow displays node elements inside of a `NodeWrapper` component,
       // which compiles down to a div with the class `react-flow__node`.
@@ -19,7 +19,7 @@ export const BaseNode = forwardRef<
       "[.react-flow\\_\\_node.selected_&]:shadow-lg",
       className,
     )}
-    tabIndex={0}
+    // tabIndex={0}
     {...props}
   />
 ));
@@ -84,7 +84,7 @@ export const BaseNodeFooter = forwardRef<
     ref={ref}
     data-slot="base-node-footer"
     className={cn(
-      "flex flex-col items-center gap-y-2 border-t px-3 pb-3 pt-2",
+      "flex flex-col items-center gap-y-2 border-t px-3 pt-2 pb-3",
       className,
     )}
     {...props}
