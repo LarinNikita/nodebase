@@ -4,7 +4,7 @@ import { memo } from "react";
 
 import Image from "next/image";
 import { LucideIcon } from "lucide-react";
-import { Position, type NodeProps } from "@xyflow/react";
+import { Position, useReactFlow, type NodeProps } from "@xyflow/react";
 
 import { BaseHandle } from "@/components/base-handle";
 import { WorkflowNode } from "@/components/workflow-node";
@@ -22,6 +22,7 @@ interface BaseExecutionNodeProps extends NodeProps {
 
 export const BaseExecutionNode = memo(
   ({
+    id,
     icon: Icon,
     name,
     description,
@@ -29,7 +30,21 @@ export const BaseExecutionNode = memo(
     onSettings,
     onDoubleClick,
   }: BaseExecutionNodeProps) => {
-    const handleDelete = () => {};
+    const { setNodes, setEdges } = useReactFlow();
+
+    const handleDelete = () => {
+      setNodes((currentNodes) => {
+        const updatedNodes = currentNodes.filter((node) => node.id !== id);
+        return updatedNodes;
+      });
+
+      setEdges((currentEdges) => {
+        const updatedEdges = currentEdges.filter(
+          (edge) => edge.source !== id && edge.target !== id,
+        );
+        return updatedEdges;
+      });
+    };
 
     return (
       <WorkflowNode
