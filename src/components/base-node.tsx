@@ -1,28 +1,38 @@
-import { cn } from "@/lib/utils";
 import { forwardRef, type HTMLAttributes } from "react";
 
-export const BaseNode = forwardRef<
-  HTMLDivElement,
-  HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
-  <div
-    ref={ref}
-    className={cn(
-      "bg-card text-card-foreground relative rounded-md border",
-      "hover:ring-1",
-      // React Flow displays node elements inside of a `NodeWrapper` component,
-      // which compiles down to a div with the class `react-flow__node`.
-      // When a node is selected, the class `selected` is added to the
-      // `react-flow__node` element. This allows us to style the node when it
-      // is selected, using Tailwind's `&` selector.
-      "[.react-flow\\_\\_node.selected_&]:border-muted-foreground",
-      "[.react-flow\\_\\_node.selected_&]:shadow-lg",
-      className,
-    )}
-    // tabIndex={0}
-    {...props}
-  />
-));
+import { CheckCircle2Icon, Loader2Icon, XCircleIcon } from "lucide-react";
+
+import { cn } from "@/lib/utils";
+
+import type { NodeStatus } from "./node-status-indicator";
+
+interface BaseNodeProps extends HTMLAttributes<HTMLDivElement> {
+  status?: NodeStatus;
+}
+
+export const BaseNode = forwardRef<HTMLDivElement, BaseNodeProps>(
+  ({ className, status, ...props }, ref) => (
+    <div
+      ref={ref}
+      className={cn(
+        "bg-card text-card-foreground border-muted-foreground hover:bg-accent relative rounded-sm border",
+        className,
+      )}
+      {...props}
+    >
+      {props.children}
+      {status === "error" && (
+        <XCircleIcon className="absolute right-0.5 bottom-0.5 size-2 stroke-3 text-red-700" />
+      )}
+      {status === "success" && (
+        <CheckCircle2Icon className="absolute right-0.5 bottom-0.5 size-2 stroke-3 text-green-700" />
+      )}
+      {status === "loading" && (
+        <Loader2Icon className="absolute -right-0.5 -bottom-0.5 size-2 animate-spin stroke-3 text-blue-700" />
+      )}
+    </div>
+  ),
+);
 BaseNode.displayName = "BaseNode";
 
 /**
