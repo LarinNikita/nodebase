@@ -9,7 +9,7 @@ import type { NodeExecutor } from "../types";
 export const executorRegistry: Record<NodeType, NodeExecutor> = {
   [NodeType.MANUAL_TRIGGER]: manualTriggerExecutor,
   [NodeType.INITIAL]: manualTriggerExecutor,
-  [NodeType.HTTP_REQUEST]: httpRequestExecutor,
+  [NodeType.HTTP_REQUEST]: httpRequestExecutor, // TODO: Fix types
 };
 
 export const getExecutor = (type: NodeType): NodeExecutor => {
