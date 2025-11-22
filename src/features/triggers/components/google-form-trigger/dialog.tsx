@@ -4,6 +4,8 @@ import { toast } from "sonner";
 import { CopyIcon } from "lucide-react";
 import { useParams } from "next/navigation";
 
+import { generateGoogleFormScript } from "./utils";
+
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -14,7 +16,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { generateGoogleFormScript } from "./utils";
 
 interface Props {
   open: boolean;
